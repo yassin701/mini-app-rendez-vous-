@@ -1,15 +1,21 @@
 import React from 'react';
+import axios from 'axios';
+
 import { useForm } from 'react-hook-form';
 import { Calendar, Clock, User, Mail, FileText, ChevronRight, CheckCircle2, Phone } from 'lucide-react';
+const API_BACKEND = import.meta.env.VITE_API_BACKEND;
+
 
 export default function AppointmentForm() {
   const { register, handleSubmit, formState: { errors, isSubmitting, isSubmitSuccessful }, reset } = useForm();
 
   const onSubmit = async (data) => {
-    // Simulate backend relation
-    console.log("Preparing to send to backend:", data);
-    await new Promise(resolve => setTimeout(resolve, 1500));
-    // Reset after success if needed: reset();
+    try {
+      const response = await axios.post(API_BACKEND, data);
+      console.log('Response:', response.data);
+    } catch (error) {
+      console.error('Error posting data:', error);
+    }
   };
 
   if (isSubmitSuccessful) {
@@ -55,12 +61,13 @@ export default function AppointmentForm() {
                 </div>
                 <input
                   type="text"
-                  {...register("fullName", { required: "Name is required" })}
-                  className={`w-full pl-11 pr-4 py-3 bg-black/20 border ${errors.fullName ? 'border-rose-500/50' : 'border-white/10'} rounded-xl text-white placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500/50 transition-all`}
+                  {...register("full_Name", { required: "Name is required" })}
+
+                  className={`w-full pl-11 pr-4 py-3 bg-black/20 border ${errors.full_Name ? 'border-rose-500/50' : 'border-white/10'} rounded-xl text-white placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500/50 transition-all`}
                   placeholder="John Doe"
                 />
               </div>
-              {errors.fullName && <p className="text-rose-400 text-xs ml-1 mt-1">{errors.fullName.message}</p>}
+              {errors.full_Name && <p className="text-rose-400 text-xs ml-1 mt-1">{errors.full_Name.message}</p>}
             </div>
 
             {/* Email */}
@@ -76,6 +83,7 @@ export default function AppointmentForm() {
                     required: "Email is required",
                     pattern: { value: /^\S+@\S+$/i, message: "Invalid email" }
                   })}
+
                   className={`w-full pl-11 pr-4 py-3 bg-black/20 border ${errors.email ? 'border-rose-500/50' : 'border-white/10'} rounded-xl text-white placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500/50 transition-all`}
                   placeholder="john@example.com"
                 />
@@ -92,15 +100,15 @@ export default function AppointmentForm() {
                 </div>
                 <input
                   type="tel"
-                  {...register("phone", { 
+                  {...register("phone_Num", { 
                     required: "Phone number is required",
                     pattern: { value: /^[0-9+\s-]{8,15}$/, message: "Invalid phone number" }
                   })}
-                  className={`w-full pl-11 pr-4 py-3 bg-black/20 border ${errors.phone ? 'border-rose-500/50' : 'border-white/10'} rounded-xl text-white placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500/50 transition-all`}
+                  className={`w-full pl-11 pr-4 py-3 bg-black/20 border ${errors.phone_Num ? 'border-rose-500/50' : 'border-white/10'} rounded-xl text-white placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500/50 transition-all`}
                   placeholder="+1 (555) 000-0000"
                 />
               </div>
-              {errors.phone && <p className="text-rose-400 text-xs ml-1 mt-1">{errors.phone.message}</p>}
+              {errors.phone_Num && <p className="text-rose-400 text-xs ml-1 mt-1">{errors.phone_Num.message}</p>}
             </div>
 
             {/* Date */}
@@ -112,11 +120,12 @@ export default function AppointmentForm() {
                 </div>
                 <input
                   type="date"
-                  {...register("date", { required: "Date is required" })}
-                  className={`w-full pl-11 pr-4 py-3 bg-black/20 border ${errors.date ? 'border-rose-500/50' : 'border-white/10'} rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500/50 transition-all [color-scheme:dark]`}
+                  {...register("Date", { required: "Date is required" })}
+
+                  className={`w-full pl-11 pr-4 py-3 bg-black/20 border ${errors.Date ? 'border-rose-500/50' : 'border-white/10'} rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500/50 transition-all [color-scheme:dark]`}
                 />
               </div>
-              {errors.date && <p className="text-rose-400 text-xs ml-1 mt-1">{errors.date.message}</p>}
+              {errors.Date && <p className="text-rose-400 text-xs ml-1 mt-1">{errors.Date.message}</p>}
             </div>
 
             {/* Time */}
@@ -128,11 +137,12 @@ export default function AppointmentForm() {
                 </div>
                 <input
                   type="time"
-                  {...register("time", { required: "Time is required" })}
-                  className={`w-full pl-11 pr-4 py-3 bg-black/20 border ${errors.time ? 'border-rose-500/50' : 'border-white/10'} rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500/50 transition-all [color-scheme:dark]`}
+                  {...register("Time", { required: "Time is required" })}
+
+                  className={`w-full pl-11 pr-4 py-3 bg-black/20 border ${errors.Time ? 'border-rose-500/50' : 'border-white/10'} rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500/50 transition-all [color-scheme:dark]`}
                 />
               </div>
-              {errors.time && <p className="text-rose-400 text-xs ml-1 mt-1">{errors.time.message}</p>}
+              {errors.Time && <p className="text-rose-400 text-xs ml-1 mt-1">{errors.Time.message}</p>}
             </div>
           </div>
 
@@ -144,7 +154,8 @@ export default function AppointmentForm() {
                 <FileText className="h-5 w-5 text-zinc-500 group-focus-within:text-indigo-400 transition-colors" />
               </div>
               <textarea
-                {...register("notes")}
+                {...register("Reason_forVisit")}
+
                 rows="4"
                 className="w-full pl-11 pr-4 py-3 bg-black/20 border border-white/10 rounded-xl text-white placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500/50 transition-all resize-none"
                 placeholder="Tell us a little bit about why you're booking an appointment..."
