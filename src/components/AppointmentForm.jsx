@@ -1,6 +1,6 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
-import { Calendar, Clock, User, Mail, FileText, ChevronRight, CheckCircle2 } from 'lucide-react';
+import { Calendar, Clock, User, Mail, FileText, ChevronRight, CheckCircle2, Phone } from 'lucide-react';
 
 export default function AppointmentForm() {
   const { register, handleSubmit, formState: { errors, isSubmitting, isSubmitSuccessful }, reset } = useForm();
@@ -81,6 +81,26 @@ export default function AppointmentForm() {
                 />
               </div>
               {errors.email && <p className="text-rose-400 text-xs ml-1 mt-1">{errors.email.message}</p>}
+            </div>
+
+            {/* Phone Number */}
+            <div className="space-y-2">
+              <label className="text-sm font-medium text-zinc-300 ml-1">Phone Number</label>
+              <div className="relative group">
+                <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                  <Phone className="h-5 w-5 text-zinc-500 group-focus-within:text-indigo-400 transition-colors" />
+                </div>
+                <input
+                  type="tel"
+                  {...register("phone", { 
+                    required: "Phone number is required",
+                    pattern: { value: /^[0-9+\s-]{8,15}$/, message: "Invalid phone number" }
+                  })}
+                  className={`w-full pl-11 pr-4 py-3 bg-black/20 border ${errors.phone ? 'border-rose-500/50' : 'border-white/10'} rounded-xl text-white placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500/50 transition-all`}
+                  placeholder="+1 (555) 000-0000"
+                />
+              </div>
+              {errors.phone && <p className="text-rose-400 text-xs ml-1 mt-1">{errors.phone.message}</p>}
             </div>
 
             {/* Date */}
