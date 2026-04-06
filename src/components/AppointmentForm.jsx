@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import axios from 'axios';
 
 import { useForm } from 'react-hook-form';
@@ -7,18 +7,27 @@ const API_BACKEND = import.meta.env.VITE_API_BACKEND;
 
 
 export default function AppointmentForm() {
-  const { register, handleSubmit, formState: { errors, isSubmitting, isSubmitSuccessful }, reset } = useForm();
+  const { register, handleSubmit, formState: { errors, isSubmitting }, reset } = useForm();
+  const [serverSuccess, setServerSuccess] = useState(false);
+  const [serverError, setServerError] = useState('');
 
   const onSubmit = async (data) => {
+    setServerError('');
     try {
       const response = await axios.post(API_BACKEND, data);
       console.log('Response:', response.data);
+      if (response.data && response.data.status === 'success') {
+        setServerSuccess(true);
+      } else {
+        setServerError(response.data?.message || 'Server error occurred');
+      }
     } catch (error) {
       console.error('Error posting data:', error);
+      setServerError('Could not connect to the server. Please try again later.');
     }
   };
 
-  if (isSubmitSuccessful) {
+  if (serverSuccess) {
     return (
       <div className="flex flex-col items-center justify-center p-12 text-center bg-white/5 backdrop-blur-xl border border-white/10 rounded-3xl shadow-2xl">
         <div className="w-20 h-20 bg-emerald-500/20 text-emerald-400 rounded-full flex items-center justify-center mb-6 ring-4 ring-emerald-500/10">
@@ -27,7 +36,7 @@ export default function AppointmentForm() {
         <h3 className="text-3xl font-bold text-white mb-2">Booking Confirmed</h3>
         <p className="text-zinc-400 max-w-md">Your appointment request has been recorded. We will send a confirmation email shortly.</p>
         <button 
-          onClick={() => reset()}
+          onClick={() => { reset(); setServerSuccess(false); }}
           className="mt-8 px-6 py-3 bg-zinc-800 hover:bg-zinc-700 text-white rounded-xl font-medium transition-all duration-300"
         >
           Book Another
@@ -49,6 +58,12 @@ export default function AppointmentForm() {
           </h2>
           <p className="mt-3 text-zinc-400">Fill in your details below and we'll be in touch.</p>
         </div>
+
+        {serverError && (
+          <div className="mb-6 p-4 bg-red-500/10 border border-red-500/50 rounded-xl text-red-400 text-sm text-center">
+            {serverError}
+          </div>
+        )}
 
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
