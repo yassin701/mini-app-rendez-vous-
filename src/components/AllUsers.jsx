@@ -9,11 +9,11 @@ export default function UsersTable() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const navigate = useNavigate();
-
+ const API_BACKEND = import.meta.env.VITE_API_BACKEND;
   const getUsers = async () => {
     try {
       const res = await axios.get(
-        "http://localhost/mini-app-rendez-vous-/BACKEND/users.php"
+       `${API_BACKEND}/users.php`
       );
 
       if (res.data.status === "success") {
