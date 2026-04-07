@@ -1,40 +1,41 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { sendToN8n } from '../Services/N8n';
-
 import { useForm } from 'react-hook-form';
 import { Calendar, Clock, User, Mail, FileText, ChevronRight, CheckCircle2, Phone } from 'lucide-react';
+import { useLocation } from 'react-router-dom';
 const API_BACKEND = import.meta.env.VITE_API_BACKEND;
 
 
-export default function AppointmentForm() {
+export default function Edit() {
   const { register, handleSubmit, formState: { errors, isSubmitting }, reset } = useForm();
   const [serverSuccess, setServerSuccess] = useState(false);
   const [serverError, setServerError] = useState('');
-  
+  const location = useLocation();
+  const userData = location.state;
 
+useEffect(() => {
+  if (userData) {
+    reset(userData);
+  }
+}, [userData, reset]);
 
-  const onSubmit = async (data) => {
-    setServerError('');
-    try {
-      const response = await axios.post(API_BACKEND, data);
-      console.log('Response:', response.data);
-      if (response.data && response.data.status === 'success') {
-        setServerSuccess(true);
-      } else {
-        setServerError(response.data?.message || 'Server error occurred');
-      }
-    } catch (error) {
-      console.error('Error posting data:', error);
-      setServerError('Could not connect to the server. Please try again later.');
+const onSubmit = async (data) => {
+  try {
+    const response = await axios.put(
+      "http://localhost/mini-app-rendez-vous-/BACKEND/edit.php",
+      { ...data, id: userData.id }
+    );
+
+    if (response.data.status === "success") {
+      setServerSuccess(true);
+    } else {
+      setServerError(response.data.message || "Failed to update");
     }
-    try {
-      await sendToN8n(data);
-      console.log('Data sent to n8n successfully');
-    } catch (error) {
-      console.error('Error sending data to n8n:', error);
-    }
-  };
+  } catch (error) {
+    console.error(error);
+    setServerError("Server error, please try again.");
+  }
+};
 
   if (serverSuccess) {
     return (
@@ -194,7 +195,7 @@ export default function AppointmentForm() {
             className="w-full group mt-8 relative flex items-center justify-center gap-2 px-8 py-4 bg-gradient-to-r from-indigo-500 to-rose-500 hover:from-indigo-400 hover:to-rose-400 text-white rounded-xl font-bold text-lg shadow-lg shadow-indigo-500/25 hover:shadow-indigo-500/40 disabled:opacity-70 disabled:cursor-not-allowed transition-all duration-300 overflow-hidden"
           >
             <span className="relative z-10 transition-transform group-hover:-translate-x-1">
-              {isSubmitting ? "Processing..." : "Confirm Appointment"}
+              {isSubmitting ? "Processing..." : "Update Appointment"}
             </span>
             {!isSubmitting && <ChevronRight className="w-5 h-5 transition-transform group-hover:translate-x-1 relative z-10" />}
           </button>
