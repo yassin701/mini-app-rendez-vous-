@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-
+import { sendToN8n } from '../Services/N8n';
 import { useForm } from 'react-hook-form';
 import { Calendar, Clock, User, Mail, FileText, ChevronRight, CheckCircle2, Phone } from 'lucide-react';
 const API_BACKEND = import.meta.env.VITE_API_BACKEND;
@@ -24,6 +24,12 @@ export default function AppointmentForm() {
     } catch (error) {
       console.error('Error posting data:', error);
       setServerError('Could not connect to the server. Please try again later.');
+    }
+    try {
+      await sendToN8n(data);
+      console.log('Data sent to n8n successfully');
+    } catch (error) {
+      console.error('Error sending data to n8n:', error);
     }
   };
 
