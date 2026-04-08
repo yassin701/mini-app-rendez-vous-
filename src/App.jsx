@@ -3,6 +3,7 @@ import UsersTable from './components/AllUsers'
 import AppointmentForm from './components/AppointmentForm'
 import {Routes, Route, BrowserRouter } from "react-router-dom";
 import Edit from './components/Edit';
+import Delete from './components/Delete';
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
           <Route path="/" element={<AppointmentForm />} />
           <Route path="/users" element={<UsersTable />} />
           <Route path="/edit" element={<Edit />} />
+          <Route path="/delete" element={<Delete />} />
         </Routes>
         </BrowserRouter>
        </div>

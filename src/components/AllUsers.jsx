@@ -91,7 +91,7 @@ export default function UsersTable() {
                     <button
                       className="cursor-pointer text-red-500 hover:text-red-400"
                       title="Delete"
-                      onClick={() => console.log("Delete user:", user.id)}
+                      onClick={() => navigate("/delete", { state: user })}
                     >
                       <Trash2 size={18} />
                     </button>

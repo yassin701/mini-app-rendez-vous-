@@ -1,17 +1,16 @@
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { useForm } from 'react-hook-form';
 import { Calendar, Clock, User, Mail, FileText, ChevronRight, CheckCircle2, Phone } from 'lucide-react';
 import { useLocation } from 'react-router-dom';
-const API_BACKEND = import.meta.env.VITE_API_BACKEND;
-
-
 export default function Edit() {
   const { register, handleSubmit, formState: { errors, isSubmitting }, reset } = useForm();
-  const [serverSuccess, setServerSuccess] = useState(false);
   const [serverError, setServerError] = useState('');
   const location = useLocation();
   const userData = location.state;
+  const navigate = useNavigate();
+  const API_BACKEND2 = import.meta.env.VITE_API_BACKEND2;
 
 useEffect(() => {
   if (userData) {
@@ -22,12 +21,12 @@ useEffect(() => {
 const onSubmit = async (data) => {
   try {
     const response = await axios.put(
-      API_BACKEND,
+      API_BACKEND2,
       { ...data, id: userData.id }
     );
 
     if (response.data.status === "success") {
-      setServerSuccess(true);
+      navigate('/users');
     } else {
       setServerError(response.data.message || "Failed to update");
     }
@@ -37,23 +36,7 @@ const onSubmit = async (data) => {
   }
 };
 
-  if (serverSuccess) {
-    return (
-      <div className="flex flex-col items-center justify-center p-12 text-center bg-white/5 backdrop-blur-xl border border-white/10 rounded-3xl shadow-2xl">
-        <div className="w-20 h-20 bg-emerald-500/20 text-emerald-400 rounded-full flex items-center justify-center mb-6 ring-4 ring-emerald-500/10">
-          <CheckCircle2 size={40} />
-        </div>
-        <h3 className="text-3xl font-bold text-white mb-2">Booking Confirmed</h3>
-        <p className="text-zinc-400 max-w-md">Your appointment request has been recorded. We will send a confirmation email shortly.</p>
-        <button 
-          onClick={() => { reset(); setServerSuccess(false); }}
-          className="mt-8 px-6 py-3 bg-zinc-800 hover:bg-zinc-700 text-white rounded-xl font-medium transition-all duration-300"
-        >
-          Book Another
-        </button>
-      </div>
-    );
-  }
+
 
   return (
     <div className="w-full max-w-2xl mx-auto p-8 sm:p-10 bg-zinc-900/40 backdrop-blur-2xl border border-white/5 shadow-2xl rounded-3xl relative overflow-hidden">

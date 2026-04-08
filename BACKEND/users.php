@@ -3,7 +3,7 @@
 require 'db.php';
 
 // ✅ Get all users
-$sql = "SELECT * FROM users ORDER BY id DESC";
+$sql = "SELECT * FROM users ORDER BY id ASC";
 $result = $conn->query($sql);
 
 $users = [];
