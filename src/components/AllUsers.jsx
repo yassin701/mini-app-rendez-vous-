@@ -75,7 +75,7 @@ export default function UsersTable() {
                     <button
                       className="cursor-pointer text-blue-400 hover:text-blue-300"
                       title="View"
-                      onClick={() => console.log("Show user:", user)}
+                      onClick={() => navigate('/show', { state: user })}
                     >
                       <Eye size={18} />
                     </button>
