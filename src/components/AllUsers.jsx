@@ -9,11 +9,11 @@ export default function UsersTable() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const navigate = useNavigate();
- const API_BACKEND = import.meta.env.VITE_API_BACKEND;
+ const API_BACKEND = import.meta.env.VITE_API_BACKEND1;
   const getUsers = async () => {
     try {
       const res = await axios.get(
-       `${API_BACKEND}/users.php`
+       API_BACKEND
       );
 
       if (res.data.status === "success") {

@@ -22,7 +22,7 @@ useEffect(() => {
 const onSubmit = async (data) => {
   try {
     const response = await axios.put(
-      "http://localhost/mini-app-rendez-vous-/BACKEND/edit.php",
+      API_BACKEND,
       { ...data, id: userData.id }
     );
 
