@@ -9,11 +9,11 @@ export default function UsersTable() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const navigate = useNavigate();
-
+ const API_BACKEND = import.meta.env.VITE_API_BACKEND1;
   const getUsers = async () => {
     try {
       const res = await axios.get(
-        "http://localhost/mini-app-rendez-vous-/BACKEND/users.php"
+       API_BACKEND
       );
 
       if (res.data.status === "success") {
@@ -91,7 +91,7 @@ export default function UsersTable() {
                     <button
                       className="cursor-pointer text-red-500 hover:text-red-400"
                       title="Delete"
-                      onClick={() => console.log("Delete user:", user.id)}
+                      onClick={() => navigate("/delete", { state: user })}
                     >
                       <Trash2 size={18} />
                     </button>
